@@ -6,10 +6,6 @@ import { RecipeResolver } from './recipe.resolver';
 
 @Module({
   controllers: [RecipeController],
-  providers: [
-    PrismaService,
-    RecipeService,
-    RecipeResolver
-  ]
+  providers: [RecipeService, PrismaService, RecipeResolver]
 })
 export class RecipeModule {}
