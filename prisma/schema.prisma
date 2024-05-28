@@ -10,5 +10,32 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DB_URL_EXTERNAL")
+}
+
+model Recipe {
+  id          Int          @id @default(autoincrement())
+  name        String
+  description String
+  ingredients Ingredient[]
+  steps       Step[]
+}
+
+model Ingredient {
+  id       Int     @id @default(autoincrement())
+  name     String
+  count    Int
+  // todo: mb set g/mg/teaspoon/ml etc
+  measure  String
+  Recipe   Recipe @relation(fields: [recipeId], references: [id])
+  recipeId Int
+}
+
+model Step {
+  id          Int     @id @default(autoincrement())
+  description String
+  title       String?
+  image       String?
+  Recipe      Recipe @relation(fields: [recipeId], references: [id])
+  recipeId    Int
 }
