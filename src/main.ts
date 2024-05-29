@@ -2,10 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify';
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+import * as process from 'node:process';
 
 
 const corsOptions: CorsOptions = {
-  origin: ['http://localhost:4200', 'http://localhost:3000'],
+  origin: ['http://localhost:4200', process.env.API_URL],
 };
 
 async function bootstrap() {
