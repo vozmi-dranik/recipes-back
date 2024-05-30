@@ -18,7 +18,7 @@ export class RecipeResolver {
   }
 
   @Mutation('createRecipe')
-  async createRecipe(@Args('dto') dto: CreateRecipeDto) {
-    return this._recipeService.createRecipe(dto);
+  async createRecipe(@Args('recipeData') data: CreateRecipeDto) {
+    return this._recipeService.createRecipe(data);
   }
 }

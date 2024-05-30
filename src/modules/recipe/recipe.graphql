@@ -28,5 +28,24 @@ type Query {
 }
 
 type Mutation {
-    createRecipe(name: String!, description: String!): Recipe
+    createRecipe(recipeData: RecipeInput): Recipe
+}
+
+input RecipeInput {
+    name: String!
+    description: String!
+    ingredients: [IngredientInput]
+    steps: [StepInput]
+}
+
+input IngredientInput {
+    name: String!
+    count: Int!
+    measure: String!
+}
+
+input StepInput {
+    description: String!
+    title: String
+    image: String
 }

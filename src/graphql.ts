@@ -8,6 +8,25 @@
 /* tslint:disable */
 /* eslint-disable */
 
+export interface RecipeInput {
+    name: string;
+    description: string;
+    ingredients?: Nullable<Nullable<IngredientInput>[]>;
+    steps?: Nullable<Nullable<StepInput>[]>;
+}
+
+export interface IngredientInput {
+    name: string;
+    count: number;
+    measure: string;
+}
+
+export interface StepInput {
+    description: string;
+    title?: Nullable<string>;
+    image?: Nullable<string>;
+}
+
 export interface Recipe {
     id: string;
     name: string;
@@ -38,7 +57,7 @@ export interface IQuery {
 }
 
 export interface IMutation {
-    createRecipe(name: string, description: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    createRecipe(recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
 }
 
 type Nullable<T> = T | null;
