@@ -6,7 +6,7 @@ import * as process from 'node:process';
 
 
 const corsOptions: CorsOptions = {
-  origin: ['http://localhost:4200', process.env.API_URL],
+  origin: ['http://localhost:4200', process.env.API_URL, process.env.APP_URL],
 };
 
 async function bootstrap() {
