@@ -11,11 +11,12 @@ export class RecipeService {
     return this._prisma.recipe.findMany();
   }
 
-  getRecipeById(id: number): PrismaPromise<Recipe> {
-    return this._prisma.recipe.findUnique({ where: { id: +id }, include: { ingredients: true, steps: true } });
+  getRecipeById(id: string): PrismaPromise<Recipe> {
+    return this._prisma.recipe.findUnique({ where: { id }, include: { ingredients: true, steps: true } });
   }
 
   createRecipe(dto: CreateRecipeDto): PrismaPromise<Recipe> {
+    console.log(dto);
     const data: Prisma.RecipeCreateInput = { name: dto.name, description: dto.description };
     if (dto.ingredients?.length) {
       data['ingredients'] = {
@@ -40,11 +41,11 @@ export class RecipeService {
     });
   }
 
-  updateRecipe(id: number, data: any) {
+  updateRecipe(id: string, data: any) {
     return this._prisma.recipe.update({ where: { id }, data });
   }
 
-  deleteRecipe(id: number) {
+  deleteRecipe(id: string) {
     return this._prisma.recipe.delete({ where: { id } });
   }
 }

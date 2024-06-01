@@ -13,12 +13,22 @@ export class RecipeResolver {
   }
 
   @Query('recipe')
-  async getRecipeById(@Args('id') id: number) {
+  async getRecipeById(@Args('id') id: string) {
     return this._recipeService.getRecipeById(id);
   }
 
   @Mutation('createRecipe')
   async createRecipe(@Args('recipeData') data: CreateRecipeDto) {
     return this._recipeService.createRecipe(data);
+  }
+
+  @Mutation('updateRecipe')
+  async updateRecipe(@Args('id') id: string, @Args('recipeData') data: any) {
+    return this._recipeService.updateRecipe(id, data);
+  }
+
+  @Mutation('deleteRecipe')
+  async deleteRecipe(@Args('id') id: string) {
+    return this._recipeService.deleteRecipe(id);
   }
 }

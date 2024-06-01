@@ -1,9 +1,13 @@
+scalar DateTime
+
 type Recipe {
     id: ID!
     name: String!
     description: String!
     ingredients: [Ingredient]
     steps: [Step]
+    createdAt: DateTime!
+    updatedAt: DateTime!
 }
 
 type Ingredient {
@@ -28,7 +32,9 @@ type Query {
 }
 
 type Mutation {
-    createRecipe(recipeData: RecipeInput): Recipe
+    createRecipe(recipeData: RecipeInput): Recipe,
+    updateRecipe(id: ID!, recipeData: RecipeInput): Recipe,
+    deleteRecipe(id: ID!): Recipe
 }
 
 input RecipeInput {

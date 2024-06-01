@@ -33,6 +33,8 @@ export interface Recipe {
     description: string;
     ingredients?: Nullable<Nullable<Ingredient>[]>;
     steps?: Nullable<Nullable<Step>[]>;
+    createdAt: DateTime;
+    updatedAt: DateTime;
 }
 
 export interface Ingredient {
@@ -58,6 +60,9 @@ export interface IQuery {
 
 export interface IMutation {
     createRecipe(recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    updateRecipe(id: string, recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    deleteRecipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
 }
 
+export type DateTime = any;
 type Nullable<T> = T | null;

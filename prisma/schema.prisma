@@ -14,11 +14,13 @@ datasource db {
 }
 
 model Recipe {
-  id          Int          @id @default(autoincrement())
+  id          String          @id @default(uuid())
   name        String
   description String
   ingredients Ingredient[]
   steps       Step[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
 }
 
 model Ingredient {
@@ -28,7 +30,7 @@ model Ingredient {
   // todo: mb set g/mg/teaspoon/ml etc
   measure  String
   Recipe   Recipe @relation(fields: [recipeId], references: [id])
-  recipeId Int
+  recipeId String
 }
 
 model Step {
@@ -37,5 +39,5 @@ model Step {
   title       String?
   image       String?
   Recipe      Recipe @relation(fields: [recipeId], references: [id])
-  recipeId    Int
+  recipeId    String
 }

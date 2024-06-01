@@ -13,7 +13,7 @@ export class RecipeController {
   }
 
   @Get(':id')
-  getRecipeById( @Param('id') id: number,) {
+  getRecipeById( @Param('id') id: string,) {
     return this._recipeService.getRecipeById(id);
   }
 
