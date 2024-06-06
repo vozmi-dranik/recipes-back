@@ -4,9 +4,8 @@ import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import * as process from 'node:process';
 
-
 const corsOptions: CorsOptions = {
-  origin: ['http://localhost:4200', process.env.API_URL, process.env.APP_URL],
+  origin: [process.env.API_URL, RegExp(process.env.APP_URL)],
 };
 
 async function bootstrap() {
@@ -14,6 +13,7 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
+  console.log(corsOptions);
   app.enableCors(corsOptions);
 
   await app.listen(3000, '0.0.0.0');
