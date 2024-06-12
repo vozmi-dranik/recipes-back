@@ -12,7 +12,10 @@ export class RecipeService {
   }
 
   getRecipeById(id: string): PrismaPromise<Recipe> {
-    return this._prisma.recipe.findUnique({ where: { id }, include: { ingredients: true, steps: true } });
+    return this._prisma.recipe.findUnique({
+      where: { id },
+      include: { ingredients: true, steps: true },
+    });
   }
 
   createRecipe(dto: CreateRecipeDto): PrismaPromise<Recipe> {
