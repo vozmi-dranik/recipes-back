@@ -35,11 +35,13 @@ type Mutation {
     createRecipe(recipeData: RecipeInput): Recipe,
     updateRecipe(id: ID!, recipeData: RecipeInput): Recipe,
     deleteRecipe(id: ID!): Recipe
+    addStep(recipeId: ID!, stepData: StepInput): Step
+    addIngredient(recipeId: ID!, ingredientData: IngredientInput): Ingredient
 }
 
 input RecipeInput {
-    name: String!
-    description: String!
+    name: String
+    description: String
     ingredients: [IngredientInput]
     steps: [StepInput]
 }

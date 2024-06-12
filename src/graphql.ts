@@ -9,8 +9,8 @@
 /* eslint-disable */
 
 export interface RecipeInput {
-    name: string;
-    description: string;
+    name?: Nullable<string>;
+    description?: Nullable<string>;
     ingredients?: Nullable<Nullable<IngredientInput>[]>;
     steps?: Nullable<Nullable<StepInput>[]>;
 }
@@ -62,6 +62,8 @@ export interface IMutation {
     createRecipe(recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
     updateRecipe(id: string, recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
     deleteRecipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    addStep(recipeId: string, stepData?: Nullable<StepInput>): Nullable<Step> | Promise<Nullable<Step>>;
+    addIngredient(recipeId: string, ingredientData?: Nullable<IngredientInput>): Nullable<Ingredient> | Promise<Nullable<Ingredient>>;
 }
 
 export type DateTime = any;

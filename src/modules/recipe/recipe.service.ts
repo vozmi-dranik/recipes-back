@@ -51,4 +51,12 @@ export class RecipeService {
   deleteRecipe(id: string) {
     return this._prisma.recipe.delete({ where: { id } });
   }
+
+  addStep(recipeId: string, data: any) {
+    return this._prisma.recipe.update({ where: { id: recipeId }, data: { steps: { create: data } } })
+  }
+
+  addIngredient(recipeId: string, data: any) {
+    return this._prisma.recipe.update({ where: { id: recipeId }, data: { ingredients: { create: data } } })
+  }
 }
