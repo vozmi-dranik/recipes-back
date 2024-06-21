@@ -16,6 +16,7 @@ type Ingredient {
     count: Int!
     measure: String!
     recipeId: ID
+    sequence: Int
 }
 
 type Step {
@@ -24,6 +25,7 @@ type Step {
     recipeId: ID
     title: String
     image: String
+    sequence: Int
 }
 
 type Query {
@@ -35,8 +37,10 @@ type Mutation {
     createRecipe(recipeData: RecipeInput): Recipe,
     updateRecipe(id: ID!, recipeData: RecipeInput): Recipe,
     deleteRecipe(id: ID!): Recipe
-    addStep(recipeId: ID!, stepData: StepInput): Step
-    addIngredient(recipeId: ID!, ingredientData: IngredientInput): Ingredient
+    addStep(recipeId: ID!, stepData: StepInput): Recipe
+    addIngredient(recipeId: ID!, ingredientData: IngredientInput): Recipe
+    deleteStep(data: RemoveStepInput): Recipe
+    deleteIngredient(data: RemoveIngredientInput): Recipe
 }
 
 input RecipeInput {
@@ -56,4 +60,14 @@ input StepInput {
     description: String!
     title: String
     image: String
+}
+
+input RemoveIngredientInput {
+    recipeId: ID
+    ingredientId: ID
+}
+
+input RemoveStepInput {
+    recipeId: ID
+    stepId: ID
 }

@@ -41,4 +41,14 @@ export class RecipeResolver {
   async addIngredient(@Args('recipeId') recipeId: string, @Args('ingredientData') data: any) {
     return this._recipeService.addIngredient(recipeId, data);
   }
+
+  @Mutation('deleteStep')
+  async deleteStep(@Args('data') data: { recipeId: string, ingredientId: string }) {
+    return this._recipeService.deleteStep(data);
+  }
+
+  @Mutation('deleteIngredient')
+  async deleteIngredient(@Args('data',) data: { recipeId: string, ingredientId: string }) {
+    return this._recipeService.deleteIngredient(data);
+  }
 }

@@ -6,7 +6,7 @@ export class CreateRecipeDto {
 }
 
 export interface Ingredient {
-  id: number;
+  id: string;
   name: string;
   count: number;
   measure: string;
@@ -14,7 +14,7 @@ export interface Ingredient {
 }
 
 export interface Step {
-  id: number;
+  id: string;
   description: string;
   title?: string | null;
   image?: string | null;

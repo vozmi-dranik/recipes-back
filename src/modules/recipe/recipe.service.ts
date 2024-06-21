@@ -52,11 +52,47 @@ export class RecipeService {
     return this._prisma.recipe.delete({ where: { id } });
   }
 
-  addStep(recipeId: string, data: any) {
-    return this._prisma.recipe.update({ where: { id: recipeId }, data: { steps: { create: data } } })
+  async addStep(recipeId: string, data: any) {
+    const steps = await this._prisma.recipe.findUnique({ where: { id: recipeId } }).steps();
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { steps: { create: { ...data, sequence: steps.length  } } },
+      include: { ingredients: true, steps: true, },
+    })
   }
 
-  addIngredient(recipeId: string, data: any) {
-    return this._prisma.recipe.update({ where: { id: recipeId }, data: { ingredients: { create: data } } })
+  async addIngredient(recipeId: string, data: any) {
+    const ingredients = await this._prisma.recipe.findUnique({ where: { id: recipeId } }).ingredients();
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { ingredients: { create: { ...data, sequence: ingredients.length } } },
+      include: { ingredients: true, steps: true, },
+    })
+  }
+
+  deleteStep({ recipeId, ingredientId }: { recipeId: string, ingredientId: string }) {
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { steps: { delete: { id: ingredientId } } },
+      include: { ingredients: true, steps: true, }
+    })
+  }
+
+  async deleteIngredient({ recipeId, ingredientId }: { recipeId: string, ingredientId: string }) {
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { ingredients: { delete: { id: ingredientId } } },
+      include: { ingredients: true, steps: true, }
+    })
+  }
+
+  updateIngredients(recipeId: string, ingredients: any) {
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { ingredients: { updateMany: ingredients } },
+      include: { ingredients: true, steps: true, }
+    })
+  }
+
+  updateSteps(recipeId: string, steps: any) {
+    return this._prisma.recipe.update({
+      where: { id: recipeId }, data: { steps: { updateMany: steps } },
+      include: { ingredients: true, steps: true, }
+    })
   }
 }
