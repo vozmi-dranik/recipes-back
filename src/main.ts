@@ -13,7 +13,6 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
-  console.log(corsOptions);
   app.enableCors(corsOptions);
 
   await app.listen(3000, '0.0.0.0');
