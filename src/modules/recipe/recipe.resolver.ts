@@ -1,25 +1,36 @@
-import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 import { RecipeService } from 'src/modules/recipe/recipe.service';
 import { CreateRecipeDto } from 'src/modules/recipe/dto/create.recipe.dto';
-
+import { AuthGuard } from 'src/guard/auth.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver()
 export class RecipeResolver {
   constructor(private readonly _recipeService: RecipeService) {}
 
   @Query('recipes')
+  @UseGuards(AuthGuard)
   async getAllRecipes() {
     return this._recipeService.getAllRecipes();
   }
 
   @Query('recipe')
-  async getRecipeById(@Args('id') id: string) {
-    return this._recipeService.getRecipeById(id);
+  @UseGuards(AuthGuard)
+  async getRecipeById(@Args('id') id: string, @Context() context) {
+    const userEmail = context.req.user?.email;
+    return this._recipeService.getRecipeById(id)
+      .then((recipe) => {
+      recipe['editable'] = recipe?.['editors'].some((editor) => editor['email'] === userEmail);
+      return recipe;
+    });
   }
 
   @Mutation('createRecipe')
-  async createRecipe(@Args('recipeData') data: CreateRecipeDto) {
-    return this._recipeService.createRecipe(data);
+  @UseGuards(AuthGuard)
+  async createRecipe(@Args('recipeData') data: CreateRecipeDto, @Context() context) {
+    const userEmail = context.req.user?.email;
+    console.log(userEmail, 'context');
+    return this._recipeService.createRecipe(data, userEmail);
   }
 
   @Mutation('updateRecipe')

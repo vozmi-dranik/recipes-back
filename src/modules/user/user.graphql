@@ -1,0 +1,20 @@
+type User {
+    id: ID!
+    email: String!
+    watchRecipes: [Recipe!]! # Assuming Recipe is another GraphQL type
+    editRecipes: [Recipe!]!  # Assuming Recipe is another GraphQL type
+    createdRecipes: [Recipe!]!  # Assuming Recipe is another GraphQL type
+}
+
+extend type Query {
+    user(id: ID!): User
+    users: [User]
+}
+
+input UserInput {
+    email: String!
+}
+
+extend type Mutation {
+    createUser(userData: UserInput!): User
+}
