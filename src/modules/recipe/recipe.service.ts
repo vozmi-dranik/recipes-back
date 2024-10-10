@@ -8,19 +8,20 @@ export class RecipeService {
   constructor(private readonly _prisma: PrismaService) {}
 
   getAllRecipes(): PrismaPromise<Recipe[]> {
-    return this._prisma.recipe.findMany();
+    return this._prisma.recipe.findMany({
+      include: { ingredients: true, steps: true, creator: true, editors: true },
+    });
   }
 
   getRecipeById(id: string): PrismaPromise<Recipe> {
     return this._prisma.recipe.findUnique({
       where: { id },
-      include: { ingredients: true, steps: true },
-    });
+      include: { ingredients: true, steps: true, creator: true, editors: true },
+    })
   }
 
-  createRecipe(dto: CreateRecipeDto): PrismaPromise<Recipe> {
-    console.log(dto);
-    const data: Prisma.RecipeCreateInput = { name: dto.name, description: dto.description };
+  createRecipe(dto: CreateRecipeDto, email: string): PrismaPromise<Recipe> {
+    const data: Prisma.RecipeCreateInput = { name: dto.name, description: dto.description, creator: { connect: { email }} };
     if (dto.ingredients?.length) {
       data['ingredients'] = {
         createMany: {
@@ -35,11 +36,21 @@ export class RecipeService {
         }
       }
     }
+    if(email) {
+      data['editors'] = {
+        connect: {
+          email
+        }
+      }
+    }
+
     return this._prisma.recipe.create({
       data,
       include: {
         ingredients: true,
         steps: true,
+        creator: true,
+        editors: true
       },
     });
   }

@@ -21,6 +21,6 @@ export class RecipeController {
   async createRecipe(@Body() dto: CreateRecipeDto, @Res({ passthrough: true }) res: Response) {
     res
       .status(HttpStatus.CREATED)
-      .send(await this._recipeService.createRecipe(dto))
+      .send(await this._recipeService.createRecipe(dto, ''))
   }
 }

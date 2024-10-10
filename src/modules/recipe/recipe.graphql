@@ -1,4 +1,6 @@
 scalar DateTime
+type Query
+type Mutation
 
 type Recipe {
     id: ID!
@@ -6,8 +8,11 @@ type Recipe {
     description: String!
     ingredients: [Ingredient]
     steps: [Step]
+    creator: User
     createdAt: DateTime!
     updatedAt: DateTime!
+    editable: Boolean!
+    editors: [User]
 }
 
 type Ingredient {
@@ -28,12 +33,12 @@ type Step {
     sequence: Int
 }
 
-type Query {
+extend type Query {
     recipes: [Recipe]!
     recipe(id: ID!): Recipe
 }
 
-type Mutation {
+extend type Mutation {
     createRecipe(recipeData: RecipeInput): Recipe,
     updateRecipe(id: ID!, recipeData: RecipeInput): Recipe,
     deleteRecipe(id: ID!): Recipe

@@ -37,14 +37,39 @@ export interface RemoveStepInput {
     stepId?: Nullable<string>;
 }
 
+export interface UserInput {
+    email: string;
+}
+
+export interface IQuery {
+    recipes(): Nullable<Recipe>[] | Promise<Nullable<Recipe>[]>;
+    recipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    user(id: string): Nullable<User> | Promise<Nullable<User>>;
+    users(): Nullable<Nullable<User>[]> | Promise<Nullable<Nullable<User>[]>>;
+}
+
+export interface IMutation {
+    createRecipe(recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    updateRecipe(id: string, recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    deleteRecipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    addStep(recipeId: string, stepData?: Nullable<StepInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    addIngredient(recipeId: string, ingredientData?: Nullable<IngredientInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    deleteStep(data?: Nullable<RemoveStepInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    deleteIngredient(data?: Nullable<RemoveIngredientInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+    createUser(userData: UserInput): Nullable<User> | Promise<Nullable<User>>;
+}
+
 export interface Recipe {
     id: string;
     name: string;
     description: string;
     ingredients?: Nullable<Nullable<Ingredient>[]>;
     steps?: Nullable<Nullable<Step>[]>;
+    creator?: Nullable<User>;
     createdAt: DateTime;
     updatedAt: DateTime;
+    editable: boolean;
+    editors?: Nullable<Nullable<User>[]>;
 }
 
 export interface Ingredient {
@@ -65,19 +90,12 @@ export interface Step {
     sequence?: Nullable<number>;
 }
 
-export interface IQuery {
-    recipes(): Nullable<Recipe>[] | Promise<Nullable<Recipe>[]>;
-    recipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-}
-
-export interface IMutation {
-    createRecipe(recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    updateRecipe(id: string, recipeData?: Nullable<RecipeInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    deleteRecipe(id: string): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    addStep(recipeId: string, stepData?: Nullable<StepInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    addIngredient(recipeId: string, ingredientData?: Nullable<IngredientInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    deleteStep(data?: Nullable<RemoveStepInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
-    deleteIngredient(data?: Nullable<RemoveIngredientInput>): Nullable<Recipe> | Promise<Nullable<Recipe>>;
+export interface User {
+    id: string;
+    email: string;
+    watchRecipes: Recipe[];
+    editRecipes: Recipe[];
+    createdRecipes: Recipe[];
 }
 
 export type DateTime = any;

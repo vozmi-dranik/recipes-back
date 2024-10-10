@@ -21,10 +21,15 @@ model Recipe {
   steps       Step[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
+
+  watchers  User[] @relation("allowedToWatch")
+  editors   User[] @relation("allowedToEdit")
+  creatorId String
+  creator   User   @relation("createdRecipes", fields: [creatorId], references: [id])
 }
 
 model Ingredient {
-  id       String  @id @default(uuid())
+  id       String @id @default(uuid())
   name     String
   count    Int
   // todo: mb set g/mg/teaspoon/ml etc
@@ -43,3 +48,13 @@ model Step {
   Recipe      Recipe  @relation(fields: [recipeId], references: [id])
   recipeId    String
 }
+
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  watchRecipes Recipe[] @relation("allowedToWatch")
+  editRecipes  Recipe[] @relation("allowedToEdit")
+
+  Recipe Recipe[] @relation("createdRecipes")
+}
+
