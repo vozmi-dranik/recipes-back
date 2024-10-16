@@ -10,8 +10,9 @@ export class RecipeResolver {
 
   @Query('recipes')
   @UseGuards(AuthGuard)
-  async getAllRecipes() {
-    return this._recipeService.getAllRecipes();
+  async getAllRecipes(@Context() context) {
+    const email = context.req.user?.email;
+    return this._recipeService.getAllRecipes(email);
   }
 
   @Query('recipe')

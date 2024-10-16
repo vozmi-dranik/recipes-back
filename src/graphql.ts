@@ -70,6 +70,7 @@ export interface Recipe {
     updatedAt: DateTime;
     editable: boolean;
     editors?: Nullable<Nullable<User>[]>;
+    watchers?: Nullable<Nullable<User>[]>;
 }
 
 export interface Ingredient {

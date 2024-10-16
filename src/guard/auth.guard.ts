@@ -19,24 +19,32 @@ export class AuthGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context);
-    const req = ctx.getContext().req as Request;
-    const token = req.headers.authorization;
+    const req: Request = ctx.getContext().req;
+    const token: string = req.headers.authorization;
+    const fieldName: string = ctx.getInfo().fieldName;
 
     if (token) {
       try {
-        const decodedToken = await this._app.auth().verifyIdToken(token.replace('Bearer ', ''))
+        const decodedToken = await this._app.auth().verifyIdToken(token.replace('Bearer ', ''));
         const user = await this._userService.getUserByEmail(decodedToken.email);
-        console.log(user, 'user');
         if (!user) {
           await this._userService.createUser({ email: decodedToken.email });
         }
         req['user'] = { email: decodedToken.email };
         return true;
       } catch (error) {
-        throw new AuthenticationError('Unauthorized access');
+        this._generateErrorWithException(fieldName);
       }
     } else {
+      this._generateErrorWithException(fieldName);
+    }
+    return true
+  }
+
+  private _generateErrorWithException(fieldName: string) {
+    if (fieldName !== 'recipes') {
       throw new AuthenticationError('Unauthorized access');
     }
   }
 }
+

@@ -13,6 +13,7 @@ type Recipe {
     updatedAt: DateTime!
     editable: Boolean!
     editors: [User]
+    watchers: [User]
 }
 
 type Ingredient {

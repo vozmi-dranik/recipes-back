@@ -7,9 +7,10 @@ import { CreateRecipeDto } from 'src/modules/recipe/dto/create.recipe.dto';
 export class RecipeService {
   constructor(private readonly _prisma: PrismaService) {}
 
-  getAllRecipes(): PrismaPromise<Recipe[]> {
+  getAllRecipes(email: string = ''): PrismaPromise<Recipe[]> {
     return this._prisma.recipe.findMany({
-      include: { ingredients: true, steps: true, creator: true, editors: true },
+      where: { watchers: { some: { email } } },
+      include: { ingredients: true, steps: true, creator: true, editors: true, watchers: true },
     });
   }
 
@@ -38,6 +39,11 @@ export class RecipeService {
     }
     if(email) {
       data['editors'] = {
+        connect: {
+          email
+        }
+      }
+      data['watchers'] = {
         connect: {
           email
         }
